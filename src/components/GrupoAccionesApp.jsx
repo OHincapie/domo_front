@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { cambiarZona, controlarDispositivo, deleteD, guardarDispositivo } from "../services/api";
 import Swal from "sweetalert2";
 
-export const GrupoAccionesApp = ({ id , puerto}) => {
+export const GrupoAccionesApp = ({ id, puerto }) => {
     const [control, setControl] = useState(false);
     const obj = {
         uiltimoTiempoConsumo: 0.0,
@@ -12,7 +12,7 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
         categoria: "",
         nombreDispositivo: "",
         zona: {
-            idZona: null,
+            idZona: 0,
             nombreZona: "",
             estadoZona: true
         },
@@ -26,6 +26,7 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
     }
 
     const encender = () => {
+
         controlarDispositivo(id).then(() => {
             setControl(!control);
         }).catch((er) => {
@@ -35,22 +36,28 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
 
     const borrar = () => {
         deleteD(id).then(() => {
-            
+
         }).catch((er) => {
             console.log(er);
         })
     }
 
     const asignar = (puerto) => {
+        const zonas = [
+            { "idZona": 0, "nombreZona": "Cocina", "estadoZona": true },
+            {"idZona": 1,"nombreZona": "Baño","estadoZona": true},
+            {"idZona": 2,"nombreZona": "Sala","estadoZona": true},
+            {"idZona": 3,"nombreZona": "Cuarto1","estadoZona": true}
+        ]
         Swal.fire({
             title: 'Login Form',
             html: `<input type="text" id="id" class="swal2-input" placeholder="ID">
             <input type="text" id="nombre" class="swal2-input" placeholder="Nombre">
             <select id="zona">
-                <option value="{"idZona": 0,"nombreZona": "Cocina","estadoZona": true}">Cocina</option>
-                <option value="{"idZona": 1,"nombreZona": "Baño","estadoZona": true">Baño</option>
-                <option value="{"idZona": 2,"nombreZona": "Sala","estadoZona": true}">Sala</option>
-                <option value="{"idZona": 3,"nombreZona": "Cuarto1","estadoZona": true}">Cuarto</option>
+                <option value="0">Cocina</option>
+                <option value="1">Baño</option>
+                <option value="2">Sala</option>
+                <option value="3">Cuarto</option>
             </select>`
             ,
             confirmButtonText: 'Registrar',
@@ -64,11 +71,12 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
                 }
                 obj.idDispositivo = id;
                 obj.nombreDispositivo = nombre;
-                obj.zona = JSON.stringify(zona);
-                obj.puerto = puerto;
+                obj.zona = zonas[zona];
+                obj.puerto.id = puerto;
                 return obj;
             }
         }).then((result) => {
+
             console.log(result.value);
             guardarDispositivo(result.value).then(() => {
                 console.log('ok');
@@ -86,7 +94,7 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
             title: 'Login Form',
             html: `Nueva zona:
             <select id="zona">
-                <option value="{"idZona": 0,"nombreZona": "Cocina","estadoZona": true}">Cocina</option>
+                <option value="{"idZona": 0,"nombreZona": "Cocina","estadoZona": true}" selected>Cocina</option>
                 <option value="{"idZona": 1,"nombreZona": "Baño","estadoZona": true">Baño</option>
                 <option value="{"idZona": 2,"nombreZona": "Sala","estadoZona": true}">Sala</option>
                 <option value="{"idZona": 3,"nombreZona": "Cuarto1","estadoZona": true}">Cuarto</option>
@@ -96,11 +104,12 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
             focusConfirm: false,
             preConfirm: () => {
                 const zona = Swal.getPopup().querySelector('#zona').value
-                if ( !zona) {
+                if (!zona) {
                     Swal.showValidationMessage(`Please enter values`)
                 }
                 obj.idDispositivo = id;
                 obj.zona = JSON.stringify(zona);
+                console.log(obj.zona);
                 obj.puerto = puerto;
                 return obj;
             }
@@ -108,6 +117,7 @@ export const GrupoAccionesApp = ({ id , puerto}) => {
             console.log(result.value);
             cambiarZona(result.value.idDispositivo, result.value.zona.idZona).then(() => {
                 console.log('ok');
+
             }).catch((er) => {
                 console.log(er);
             })

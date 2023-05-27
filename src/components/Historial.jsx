@@ -10,7 +10,8 @@ export const Historial = () => {
     const peticionHistorial = () => {
         getHistorial()
             .then((datos) => {
-                setHistorial(datos)
+                console.log(datos);
+                setHistorial(datos.slice(0, 11))
             }).catch((error) => {
                 console.log(error);
             })
@@ -32,10 +33,12 @@ export const Historial = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
                     {historial.map((dato) => {
-                        i++;
-                        return <td key={i}>{dato}</td>
+                        ++i;
+                        return <p key={i}>{dato}</p>
                     })}
+                    </tr>
                 </tbody>
             </Table>
         </Container>

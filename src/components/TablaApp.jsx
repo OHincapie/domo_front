@@ -22,9 +22,9 @@ export const TablaApp = () => {
             })
     }
 
-    useEffect(() => {
-        peticionDispositivos();
-    }, [])
+    // useEffect(() => {
+    //     peticionDispositivos();
+    // }, [])
 
     setTimeout(() => {
         peticionDispositivos();
@@ -50,9 +50,9 @@ export const TablaApp = () => {
                 </thead>
                 <tbody>
                     {datos.map((dato) => {
-                        
+
                             return <RowApp key={dato.id} dato={dato}/>
-                        
+
                     })}
                 </tbody>
             </Table>
