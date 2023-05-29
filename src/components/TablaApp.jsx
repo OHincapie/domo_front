@@ -1,12 +1,21 @@
-import { Row, Table } from "react-bootstrap"
-import { RowApp } from "./RowApp"
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react"
+import { Table } from "react-bootstrap"
 import { consumoTotal, listarDispositivos } from "../services/api"
+import { RowApp } from "./RowApp"
 
 export const TablaApp = () => {
 
     const [datos, setDatos] = useState([])
     const [cT, setCT] = useState(0)
+
+
+    const consumoTotalW = () => {
+        consumoTotal()
+            .then((d) => {
+                setCT(d)
+            })
+    };
 
     const peticionDispositivos = () => {
         listarDispositivos()
@@ -15,20 +24,16 @@ export const TablaApp = () => {
             }).catch((error) => {
                 console.log(error);
             })
+        consumoTotalW();
+    };
 
-            consumoTotal()
-            .then((d)=>{
-                setCT(d)
-            })
-    }
-
-    // useEffect(() => {
-    //     peticionDispositivos();
-    // }, [])
-
-    setTimeout(() => {
+    useEffect(() => {
         peticionDispositivos();
-    }, 1000);
+    }, [])
+
+    setInterval(() => {
+        consumoTotalW();
+    }, 8000);
 
     return (
 
@@ -50,8 +55,7 @@ export const TablaApp = () => {
                 </thead>
                 <tbody>
                     {datos.map((dato) => {
-
-                            return <RowApp key={dato.id} dato={dato}/>
+                        return <RowApp key={dato.id} dato={dato} getAll={peticionDispositivos} />
 
                     })}
                 </tbody>

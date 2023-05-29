@@ -13,7 +13,7 @@ export const AccionesApp = () => {
                 <Row>
                     <Col>
                         <Button className="btn-custom" variant="outline-success"  onClick={() => {handleClick('/')}}>
-                            Registrar dispositivo <br />
+                            Ver tabla <br />
                             <img className="img-button" src="/registro.png" />
                         </Button>
                     </Col>

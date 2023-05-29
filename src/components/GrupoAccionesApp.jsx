@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { cambiarZona, controlarDispositivo, deleteD, guardarDispositivo } from "../services/api";
+import { cambiarZona, consumoIndividual, controlarDispositivo, deleteD, guardarDispositivo } from "../services/api";
 import Swal from "sweetalert2";
 
-export const GrupoAccionesApp = ({ id, puerto }) => {
+export const GrupoAccionesApp = ({ id, puerto, getAll, consumo }) => {
     const [control, setControl] = useState(false);
+
     const obj = {
         uiltimoTiempoConsumo: 0.0,
         id: 0,
@@ -26,9 +28,10 @@ export const GrupoAccionesApp = ({ id, puerto }) => {
     }
 
     const encender = () => {
-
         controlarDispositivo(id).then(() => {
             setControl(!control);
+            getAll();
+            consumo();
         }).catch((er) => {
             console.log(er);
         })
@@ -36,18 +39,28 @@ export const GrupoAccionesApp = ({ id, puerto }) => {
 
     const borrar = () => {
         deleteD(id).then(() => {
-
+            getAll();
         }).catch((er) => {
             console.log(er);
         })
     }
 
+    const actualizarDispositivo = () => {
+        consumoIndividual(id).then(() => {
+            consumo();
+        }).catch((er) => {
+            console.log(er);
+        })
+    }
+
+
+
     const asignar = (puerto) => {
         const zonas = [
             { "idZona": 0, "nombreZona": "Cocina", "estadoZona": true },
-            {"idZona": 1,"nombreZona": "Baño","estadoZona": true},
-            {"idZona": 2,"nombreZona": "Sala","estadoZona": true},
-            {"idZona": 3,"nombreZona": "Cuarto1","estadoZona": true}
+            { "idZona": 1, "nombreZona": "Baño", "estadoZona": true },
+            { "idZona": 2, "nombreZona": "Sala", "estadoZona": true },
+            { "idZona": 3, "nombreZona": "Cuarto1", "estadoZona": true }
         ]
         Swal.fire({
             title: 'Login Form',
@@ -76,14 +89,16 @@ export const GrupoAccionesApp = ({ id, puerto }) => {
                 return obj;
             }
         }).then((result) => {
-
             console.log(result.value);
             guardarDispositivo(result.value).then(() => {
+                getAll();
                 console.log('ok');
+                Swal.fire(`Registrado`)
             }).catch((er) => {
                 console.log(er);
+                Swal.fire('Error', 'Fallo algo.', 'error');
             })
-            Swal.fire(`Registrado`)
+
         })
 
     }
@@ -117,11 +132,12 @@ export const GrupoAccionesApp = ({ id, puerto }) => {
             console.log(result.value);
             cambiarZona(result.value.idDispositivo, result.value.zona.idZona).then(() => {
                 console.log('ok');
-
+                getAll();
+                Swal.fire(`Cambio la zona`);
             }).catch((er) => {
                 console.log(er);
+                Swal.fire('Error', 'Fallo algo.', 'error');
             })
-            Swal.fire(`Registrado`)
         })
 
     }
@@ -135,17 +151,26 @@ export const GrupoAccionesApp = ({ id, puerto }) => {
                     Asignar dispositivo
                 </Button>
             }
-            <Button variant="primary" size="sm" onClick={() => { encender() }}>
-                {control ? "OFF" : "ON"}
-            </Button>
+            {
+                id != "" &&
+                <>
+                    <Button variant="primary" size="sm" onClick={() => { encender() }}>
+                        {control ? "OFF" : "ON"}
+                    </Button>
 
-            <Button variant="primary" size="sm" onClick={() => { moverZona() }}>
-                Mover zona
-            </Button>
+                    <Button variant="primary" size="sm" onClick={() => { actualizarDispositivo() }}>
+                        Actualizar
+                    </Button>
 
-            <Button variant="primary" size="sm" onClick={() => { borrar() }}>
-                Borrar
-            </Button>
+                    <Button variant="primary" size="sm" onClick={() => { moverZona() }}>
+                        Mover zona
+                    </Button>
+
+                    <Button variant="primary" size="sm" onClick={() => { borrar() }}>
+                        Borrar
+                    </Button>
+                </>
+            }
         </div>
     )
 }

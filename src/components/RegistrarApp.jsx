@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const RegistrarApp = ({id}) => {
+export const RegistrarApp = () => {
     const [nombre, setNombre] = useState('');
     const [email, setEmail] = useState('');
   

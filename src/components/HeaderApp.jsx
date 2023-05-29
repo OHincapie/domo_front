@@ -8,10 +8,10 @@ export const HeaderApp = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
         <Nav >
-          <Nav.Link href="#inicio">Inicio</Nav.Link>
-          <Nav.Link href="#acerca">Dispositivos</Nav.Link>
-          <Nav.Link href="#servicios">Equipo</Nav.Link>
-          <Nav.Link href="#contacto">Contacto</Nav.Link>
+          <Nav.Link>Inicio</Nav.Link>
+          <Nav.Link>Dispositivos</Nav.Link>
+          <Nav.Link>Equipo</Nav.Link>
+          <Nav.Link>Contacto</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
