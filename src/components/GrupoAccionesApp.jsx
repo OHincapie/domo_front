@@ -66,6 +66,7 @@ export const GrupoAccionesApp = ({ id, puerto, getAll, consumo }) => {
             title: 'Login Form',
             html: `<input type="text" id="id" class="swal2-input" placeholder="ID">
             <input type="text" id="nombre" class="swal2-input" placeholder="Nombre">
+            <input type="text" id="gasto" class="swal2-input" placeholder="Consumo">
             <select id="zona">
                 <option value="0">Cocina</option>
                 <option value="1">Baño</option>
@@ -78,6 +79,7 @@ export const GrupoAccionesApp = ({ id, puerto, getAll, consumo }) => {
             preConfirm: () => {
                 const id = Swal.getPopup().querySelector('#id').value
                 const nombre = Swal.getPopup().querySelector('#nombre').value
+                const gasto = Swal.getPopup().querySelector('#gasto').value
                 const zona = Swal.getPopup().querySelector('#zona').value
                 if (!id || !nombre || !zona) {
                     Swal.showValidationMessage(`Please enter values`)
@@ -86,6 +88,7 @@ export const GrupoAccionesApp = ({ id, puerto, getAll, consumo }) => {
                 obj.nombreDispositivo = nombre;
                 obj.zona = zonas[zona];
                 obj.puerto.id = puerto;
+                obj.gastoEnergiaW=gasto;
                 return obj;
             }
         }).then((result) => {

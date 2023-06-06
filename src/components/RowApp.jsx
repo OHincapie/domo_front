@@ -2,13 +2,13 @@
 import { GrupoAccionesApp } from "./GrupoAccionesApp"
 import { consumoIndividual } from "../services/api"
 
-export const RowApp = ({ dato = null, getAll }) => {   
+export const RowApp = ({ dato = null, getAll }) => {
 
     let consumo = dato == null ? 0 : dato.consumoW;
 
     const actualizarDispositivo = () => {
         consumoIndividual(dato.idDispositivo).then((res) => {
-            consumo = res;
+            consumo=res
         }).catch((er) => {
             console.log(er);
         })

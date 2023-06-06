@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:8080'; // Reemplaza esto con tu URL base
+const BASE_URL = 'http://192.168.0.6:8080'; // Reemplaza esto con tu URL base
 
 export const listarDispositivos = async () => {
     try {
